@@ -1,7 +1,11 @@
+import CardLayout from '~/components/todo/CardLayout';
+import TodoForm from '~/components/todo/TodoForm';
+
 const HomePage = () => {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div></div>
+      <TodoForm />
+      <CardLayout />
     </main>
   );
 };
