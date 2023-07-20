@@ -1,14 +1,12 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { type ObservableArray } from '@legendapp/state';
 
 import { format } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
-import { type TodoObservable } from '~/app/page';
 import { Button } from '~/components/ui/button';
 import { Calendar } from '~/components/ui/calendar';
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
@@ -23,11 +21,8 @@ import {
 import { Input } from '~/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '~/components/ui/popover';
 import { Textarea } from '~/components/ui/textarea';
+import useTodoStore from '~/hooks/useTodoStore';
 import { cn } from '~/lib/utils';
-
-interface Props {
-  todoState: ObservableArray<TodoObservable[]>;
-}
 
 const formSchema = z.object({
   title: z.string().min(1),
@@ -35,7 +30,8 @@ const formSchema = z.object({
   content: z.string().optional(),
 });
 
-const TodoForm = ({ todoState }: Props) => {
+const TodoForm = () => {
+  const { setTodos } = useTodoStore();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -46,10 +42,7 @@ const TodoForm = ({ todoState }: Props) => {
   });
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    todoState.set((prev) => [
-      ...prev,
-      { title: values.title, date: values.date.toISOString(), content: values.content },
-    ]);
+    setTodos({ title: values.title, date: values.date.toISOString(), content: values.content });
   };
 
   return (
