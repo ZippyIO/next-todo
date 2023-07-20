@@ -8,9 +8,6 @@ dependencies:
   '@hookform/resolvers':
     specifier: ^3.1.1
     version: 3.1.1(react-hook-form@7.45.2)
-  '@legendapp/state':
-    specifier: ^1.5.0
-    version: 1.5.0(react@18.2.0)
   '@radix-ui/react-dropdown-menu':
     specifier: ^2.0.5
     version: 2.0.5(@types/react-dom@18.2.7)(@types/react@18.2.15)(react-dom@18.2.0)(react@18.2.0)
@@ -245,14 +242,6 @@ packages:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.0
       '@jridgewell/sourcemap-codec': 1.4.14
-    dev: false
-
-  /@legendapp/state@1.5.0(react@18.2.0):
-    resolution: {integrity: sha512-fhXfnsibIIqfSedayz9DUCkJmyFMUKRReNg9g83tVz13SeUS5d0YIHiggze5306FnsKmMhrgC8Up4I9Gy0psqQ==}
-    dependencies:
-      use-sync-external-store: 1.2.0(react@18.2.0)
-    transitivePeerDependencies:
-      - react
     dev: false
 
   /@next/env@13.4.10:
