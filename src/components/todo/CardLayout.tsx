@@ -8,9 +8,7 @@ const CardLayout = () => {
 
   return (
     <div className="flex flex-col gap-4">
-      {getTodos.map((todo) => (
-        <TodoCard key={`${todo.title}_${todo.date}`} todo={todo} />
-      ))}
+      {getTodos?.map((todo) => <TodoCard key={`${todo.title}_${todo.date}`} todo={todo} />)}
     </div>
   );
 };

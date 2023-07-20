@@ -12,10 +12,12 @@ interface TodoStore {
 }
 
 const useTodoStore = create<TodoStore>((set) => ({
-  getTodos: JSON.parse(window.localStorage.getItem('todos') || '[]'),
+  getTodos:
+    typeof window !== 'undefined' ? JSON.parse(window.localStorage.getItem('todos') || '[]') : null,
   setTodos: (todo) =>
     set((state) => {
-      window.localStorage.setItem('todos', JSON.stringify([...state.getTodos, todo]));
+      if (typeof window !== 'undefined')
+        window.localStorage.setItem('todos', JSON.stringify([...state.getTodos, todo]));
       return { ...state, todo: [...state.getTodos, todo] };
     }),
 }));
