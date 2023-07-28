@@ -56,12 +56,8 @@ const TodoForm = () => {
 
       return res;
     },
-    onError: (error) => {
-      console.error(error);
-    },
-    onSuccess: (data) => {
+    onSuccess: () => {
       router.refresh();
-      console.log(data);
     },
   });
 
