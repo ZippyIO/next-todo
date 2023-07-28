@@ -1,9 +1,17 @@
 import '~/styles/globals.css';
 
+import { ClerkProvider } from '@clerk/nextjs';
+
 import { type Metadata } from 'next';
+import { Inter } from 'next/font/google';
 
 import Providers from '~/components/Providers';
-import { ClerkProvider } from '@clerk/nextjs';
+import Sidebar from '~/components/ui/Sidebar';
+
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   title: 'Next Todo',
@@ -13,9 +21,10 @@ export const metadata: Metadata = {
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <ClerkProvider>
-      <html lang="en" suppressHydrationWarning>
-        <body className="bg-[url('/grid.svg')]">
-          <Providers attribute="class" defaultTheme="system" enableSystem>
+      <html lang="en" className={inter.className} suppressHydrationWarning>
+        <body className="flex bg-[#0a0a0b] bg-[url('/grid.svg')]">
+          <Providers attribute="class" defaultTheme="dark">
+            <Sidebar />
             {children}
           </Providers>
         </body>
