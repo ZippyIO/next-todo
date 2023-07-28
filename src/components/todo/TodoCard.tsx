@@ -1,8 +1,14 @@
 'use client';
 
+import { type Todo as PrismaTodo } from '@prisma/client';
+
 import { format, parseISO } from 'date-fns';
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
-import { type Todo } from '~/hooks/useTodoStore';
+
+export interface Todo extends Omit<PrismaTodo, 'date'> {
+  date: string;
+}
 
 const TodoCard = ({ todo }: { todo: Todo }) => {
   return (
@@ -11,7 +17,7 @@ const TodoCard = ({ todo }: { todo: Todo }) => {
         <CardTitle>{todo.title}</CardTitle>
         <CardDescription>{format(parseISO(todo.date), 'dd/MM/yyy')}</CardDescription>
       </CardHeader>
-      <CardContent>{todo.content}</CardContent>
+      <CardContent>{todo.note}</CardContent>
     </Card>
   );
 };
