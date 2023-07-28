@@ -1,10 +1,9 @@
 import '~/styles/globals.css';
 
-import { ClerkProvider } from '@clerk/nextjs';
-
 import { type Metadata } from 'next';
 
-import ThemeProvider from '~/components/ThemeProvider';
+import Providers from '~/components/Providers';
+import { ClerkProvider } from '@clerk/nextjs';
 
 export const metadata: Metadata = {
   title: 'Next Todo',
@@ -16,9 +15,9 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
         <body className="bg-[url('/grid.svg')]">
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <Providers attribute="class" defaultTheme="system" enableSystem>
             {children}
-          </ThemeProvider>
+          </Providers>
         </body>
       </html>
     </ClerkProvider>
