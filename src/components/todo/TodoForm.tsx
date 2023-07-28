@@ -1,9 +1,11 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
 
 import { format } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
@@ -21,28 +23,54 @@ import {
 import { Input } from '~/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '~/components/ui/popover';
 import { Textarea } from '~/components/ui/textarea';
-import useTodoStore from '~/hooks/useTodoStore';
 import { cn } from '~/lib/utils';
+import { type TodoCreationRequest } from '~/lib/validators/todo';
 
 const formSchema = z.object({
   title: z.string().min(1),
   date: z.date(),
-  content: z.string().optional(),
+  note: z.string().optional(),
 });
 
 const TodoForm = () => {
-  const { setTodos } = useTodoStore();
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: '',
       date: new Date(),
-      content: undefined,
+      note: undefined,
+    },
+  });
+
+  const { mutate: createTodo } = useMutation({
+    mutationFn: async ({ title, date, note }: TodoCreationRequest) => {
+      const payload: TodoCreationRequest = { title, date, note };
+      const res = await fetch('/api/todo/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      return res;
+    },
+    onError: (error) => {
+      console.error(error);
+    },
+    onSuccess: (data) => {
+      router.refresh();
+      console.log(data);
     },
   });
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    setTodos({ title: values.title, date: values.date.toISOString(), content: values.content });
+    createTodo({
+      title: values.title,
+      date: values.date,
+      note: values.note,
+    });
   };
 
   return (
@@ -107,7 +135,7 @@ const TodoForm = () => {
             </div>
             <FormField
               control={form.control}
-              name="content"
+              name="note"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Note</FormLabel>
