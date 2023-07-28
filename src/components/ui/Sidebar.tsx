@@ -13,7 +13,7 @@ const Sidebar = () => {
     <div className="relative flex w-[350px] flex-col border-r border-zinc-800 bg-black">
       <div className="p-4">
         <Link href="/" className="flex w-full items-center">
-          <h1 className="text-xl font-semibold tracking-wide text-zinc-400">Next Todo</h1>
+          <h1 className="text-2xl font-semibold text-zinc-400">Next Todo</h1>
         </Link>
       </div>
       <nav className="space-y-6 px-2 py-5">
