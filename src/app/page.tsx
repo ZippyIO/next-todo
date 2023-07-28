@@ -1,15 +1,13 @@
-import { RedirectToSignIn, SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
-import CardLayout from '~/components/todo/CardLayout';
-import TodoForm from '~/components/todo/TodoForm';
+import { RedirectToSignIn, SignedIn, SignedOut } from '@clerk/nextjs';
+
+import TodoCardLayout from '~/components/todo/TodoCardLayout';
 
 const HomePage = () => {
   return (
     <>
       <SignedIn>
-        <main className="flex min-h-screen flex-col items-center justify-between p-24">
-          <UserButton afterSignOutUrl="/sign-in" />
-          <TodoForm />
-          <CardLayout />
+        <main className="flex min-h-screen w-full flex-col items-center justify-between px-8 py-24">
+          <TodoCardLayout />
         </main>
       </SignedIn>
       <SignedOut>
