@@ -34,9 +34,9 @@ const SelectTrigger = React.forwardRef<
 SelectTrigger.displayName = SelectPrimitive.Trigger.displayName;
 
 const SelectContent = React.forwardRef<
-  React.ElementRef<typeof SelectPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Content>
->(({ className, children, position = 'popper', ...props }, ref) => (
+  React.ElementRef<typeof SelectPrimitive.Content> & { viewportClassname?: string },
+  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Content> & { viewportClassname?: string }
+>(({ className, viewportClassname, children, position = 'popper', ...props }, ref) => (
   <SelectPrimitive.Portal>
     <SelectPrimitive.Content
       ref={ref}
@@ -54,6 +54,7 @@ const SelectContent = React.forwardRef<
           'p-1',
           position === 'popper' &&
             'h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]',
+          viewportClassname,
         )}
       >
         {children}
