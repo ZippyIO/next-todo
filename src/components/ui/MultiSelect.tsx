@@ -1,6 +1,14 @@
 'use client';
 
 import clsx from 'clsx';
+import { LuCheck, LuChevronDown, LuXCircle } from 'react-icons/lu';
+import {
+  type ClearIndicatorProps,
+  components,
+  type DropdownIndicatorProps,
+  type MultiValueRemoveProps,
+  type OptionProps,
+} from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 
 interface Option {
@@ -14,12 +22,47 @@ interface Props {
   onValueChange: (value: string[]) => void;
 }
 
+const MultiValueRemove = (props: MultiValueRemoveProps<Option>) => {
+  return (
+    <components.MultiValueRemove {...props}>
+      <LuXCircle size={14} className="hover:fill-red-500" />
+    </components.MultiValueRemove>
+  );
+};
+
+const MultiSelectOption = (props: OptionProps<Option>) => {
+  return (
+    <components.Option {...props}>
+      {props.isSelected ? (
+        <>
+          <LuCheck className="h-4 w-4" />
+          {props.children}
+        </>
+      ) : (
+        <>{props.children}</>
+      )}
+    </components.Option>
+  );
+};
+
+const ClearIndicator = (props: ClearIndicatorProps<Option>) => {
+  return <components.ClearIndicator {...props}>Clear all</components.ClearIndicator>;
+};
+
+const DropdownIndicator = (props: DropdownIndicatorProps<Option>) => {
+  return (
+    <components.DropdownIndicator {...props}>
+      <LuChevronDown className="h-4 w-4 opacity-50" />
+    </components.DropdownIndicator>
+  );
+};
+
 const MultiSelect = ({ defaultValue, onValueChange, options }: Props) => {
   const onChange = (option: readonly Option[]) => {
     const values = option.map(({ value }) => value);
-    console.log(values);
     onValueChange(values);
   };
+
   return (
     <CreatableSelect
       defaultValue={defaultValue}
@@ -29,14 +72,27 @@ const MultiSelect = ({ defaultValue, onValueChange, options }: Props) => {
       closeMenuOnSelect={false}
       hideSelectedOptions={false}
       unstyled
+      components={{
+        MultiValueRemove,
+        Option: MultiSelectOption,
+        ClearIndicator,
+        DropdownIndicator,
+      }}
       classNames={{
-        control: () => 'bg-zinc-900 p-2 rounded-md border-none',
+        control: () => 'bg-black border border-input p-2 rounded-md',
+        placeholder: () => '!text-xs',
+        clearIndicator: () => '!text-xs text-zinc-400 hover:text-zinc-500 cursor-pointer',
         valueContainer: () => 'gap-2',
-        multiValue: () => 'bg-blue-500 p-1 rounded-md text-xs',
+        multiValue: () => 'bg-blue-500 p-1 rounded-md text-xs !flex items-center gap-1',
         multiValueLabel: () => 'text-white',
-        menu: () => 'bg-zinc-900 rounded-md overflow-hidden',
+        menu: () => 'bg-black border border-input rounded-md overflow-hidden p-1',
+        menuList: () => ' flex flex-col gap-1',
         option: ({ isFocused, isSelected }) =>
-          clsx(isSelected && '!bg-blue-500', isFocused && '!bg-zinc-800', 'bg-zinc-900 p-2'),
+          clsx(
+            isSelected && '!flex items-center gap-1.5',
+            isFocused && '!bg-accent',
+            'rounded-md bg-black p-2 !text-sm',
+          ),
       }}
     />
   );
