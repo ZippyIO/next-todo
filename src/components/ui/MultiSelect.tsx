@@ -30,7 +30,7 @@ const MultiSelect = ({ defaultValue, onValueChange, options }: Props) => {
       hideSelectedOptions={false}
       unstyled
       classNames={{
-        control: () => 'bg-zinc-900 p-2 rounded-md w-[250px] border-none',
+        control: () => 'bg-zinc-900 p-2 rounded-md border-none',
         valueContainer: () => 'gap-2',
         multiValue: () => 'bg-blue-500 p-1 rounded-md text-xs',
         multiValueLabel: () => 'text-white',
