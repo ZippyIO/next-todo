@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import { format, parseISO } from 'date-fns';
 import { BsFillCircleFill } from 'react-icons/bs';
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/Card';
 import DynamicIcon from '~/components/ui/DynamicIcon';
 
 export interface Todo extends Omit<PrismaTodo, 'dueDate' | 'createdAt' | 'updatedAt'> {

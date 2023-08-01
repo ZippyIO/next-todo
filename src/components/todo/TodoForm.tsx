@@ -10,9 +10,9 @@ import { useForm } from 'react-hook-form';
 import * as Icons from 'react-icons/di';
 import type * as z from 'zod';
 
-import { Button } from '~/components/ui/button';
-import { Calendar } from '~/components/ui/calendar';
-import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
+import { Button } from '~/components/ui/Button';
+import { Calendar } from '~/components/ui/Calendar';
+import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/Card';
 import {
   Form,
   FormControl,
@@ -20,18 +20,18 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '~/components/ui/form';
-import { Input } from '~/components/ui/input';
+} from '~/components/ui/Form';
+import { Input } from '~/components/ui/Input';
 import MultiSelect from '~/components/ui/MultiSelect';
-import { Popover, PopoverContent, PopoverTrigger } from '~/components/ui/popover';
+import { Popover, PopoverContent, PopoverTrigger } from '~/components/ui/Popover';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '~/components/ui/select';
-import { Textarea } from '~/components/ui/textarea';
+} from '~/components/ui/Select';
+import { Textarea } from '~/components/ui/TextArea';
 import { cn } from '~/lib/utils';
 import { type TodoCreationRequest, TodoValidator } from '~/lib/validators/todo';
 
