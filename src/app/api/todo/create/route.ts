@@ -11,14 +11,20 @@ export async function POST(req: NextRequest) {
     const { userId: clerkUserId } = getAuth(req);
     const body = await req.json();
 
-    const { title, date, note } = TodoValidator.parse({ ...body });
+    const { title, note, priority, tags, icon, dueDate, createdAt, updatedAt } =
+      TodoValidator.parse({ ...body });
     const userId = z.string().parse(clerkUserId);
 
     await prisma.todo.create({
       data: {
         title,
-        date,
         note,
+        priority,
+        tags,
+        icon,
+        dueDate,
+        createdAt,
+        updatedAt,
         userId,
       },
     });

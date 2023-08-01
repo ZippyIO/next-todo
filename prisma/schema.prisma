@@ -13,9 +13,14 @@ datasource db {
 }
 
 model Todo {
-  id     String   @id @default(cuid())
-  userId String
-  title  String
-  date   DateTime
-  note   String?
+  id        String    @id @default(cuid())
+  userId    String
+  title     String
+  note      String?
+  priority  String
+  tags      String[]
+  icon      String
+  dueDate   DateTime?
+  createdAt DateTime
+  updatedAt DateTime
 }
