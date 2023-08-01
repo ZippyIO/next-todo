@@ -7,7 +7,8 @@ import { format } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
-import * as z from 'zod';
+import * as Icons from 'react-icons/di';
+import type * as z from 'zod';
 
 import { Button } from '~/components/ui/button';
 import { Calendar } from '~/components/ui/calendar';
@@ -21,31 +22,62 @@ import {
   FormMessage,
 } from '~/components/ui/form';
 import { Input } from '~/components/ui/input';
+import MultiSelect from '~/components/ui/MultiSelect';
 import { Popover, PopoverContent, PopoverTrigger } from '~/components/ui/popover';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '~/components/ui/select';
 import { Textarea } from '~/components/ui/textarea';
 import { cn } from '~/lib/utils';
-import { type TodoCreationRequest } from '~/lib/validators/todo';
+import { type TodoCreationRequest, TodoValidator } from '~/lib/validators/todo';
 
-const formSchema = z.object({
-  title: z.string().min(1),
-  date: z.date(),
-  note: z.string().optional(),
-});
+const tags = [
+  { value: 'Work', label: 'Work' },
+  { value: 'Home', label: 'Home' },
+  { value: 'Personal', label: 'Personal' },
+];
+
+const FormSchema = TodoValidator.omit({ createdAt: true, updatedAt: true });
 
 const TodoForm = () => {
   const router = useRouter();
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
     defaultValues: {
       title: '',
-      date: new Date(),
       note: undefined,
+      priority: '',
+      tags: [],
+      icon: '',
+      dueDate: new Date(),
     },
   });
 
   const { mutate: createTodo } = useMutation({
-    mutationFn: async ({ title, date, note }: TodoCreationRequest) => {
-      const payload: TodoCreationRequest = { title, date, note };
+    mutationFn: async ({
+      title,
+      note,
+      priority,
+      tags,
+      icon,
+      dueDate,
+      createdAt,
+      updatedAt,
+    }: TodoCreationRequest) => {
+      const payload: TodoCreationRequest = {
+        title,
+        note,
+        priority,
+        tags,
+        icon,
+        dueDate,
+        createdAt,
+        updatedAt,
+      };
       const res = await fetch('/api/todo/create', {
         method: 'POST',
         headers: {
@@ -61,11 +93,17 @@ const TodoForm = () => {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
+  const onSubmit = (values: z.infer<typeof FormSchema>) => {
+    console.log(values);
     createTodo({
       title: values.title,
-      date: values.date,
       note: values.note,
+      priority: values.priority,
+      tags: values.tags,
+      icon: values.icon,
+      dueDate: values.dueDate,
+      createdAt: new Date(),
+      updatedAt: new Date(),
     });
   };
 
@@ -93,7 +131,7 @@ const TodoForm = () => {
               />
               <FormField
                 control={form.control}
-                name="date"
+                name="dueDate"
                 render={({ field }) => (
                   <FormItem className="flex w-2/5 flex-col">
                     <FormLabel>Due Date</FormLabel>
@@ -129,6 +167,77 @@ const TodoForm = () => {
                 )}
               />
             </div>
+            <div className="flex items-center gap-2">
+              <FormField
+                control={form.control}
+                name="tags"
+                render={({ field }) => (
+                  <FormItem className="w-3/5">
+                    <FormLabel>Tags</FormLabel>
+                    <FormControl>
+                      <MultiSelect
+                        defaultValue={null}
+                        onValueChange={field.onChange}
+                        options={tags}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div className="flex w-2/5 gap-2">
+                <FormField
+                  control={form.control}
+                  name="priority"
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormLabel>Priority</FormLabel>
+                      <Select required onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="low">Low</SelectItem>
+                          <SelectItem value="medium">Medium</SelectItem>
+                          <SelectItem value="high">High</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="icon"
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormLabel>Icon</FormLabel>
+                      <Select required onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent viewportClassname="p-2 gap-1 grid grid-cols-[repeat(6,1fr)] items-center justify-center content-center">
+                          {Object.entries(Icons).map(([name, Icon]) => (
+                            <SelectItem
+                              key={name}
+                              value={name}
+                              className="h-[24px] w-[24px] items-center justify-center p-4"
+                            >
+                              <Icon size={24} />
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
             <FormField
               control={form.control}
               name="note"
@@ -136,7 +245,7 @@ const TodoForm = () => {
                 <FormItem>
                   <FormLabel>Note</FormLabel>
                   <FormControl>
-                    <Textarea className="resize-none" {...field} />
+                    <Textarea rows={10} className="resize-none" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
