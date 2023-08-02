@@ -32,6 +32,7 @@ import {
   SelectValue,
 } from '~/components/ui/Select';
 import { Textarea } from '~/components/ui/TextArea';
+import { useToast } from '~/hooks/use-toast';
 import { cn } from '~/lib/utils';
 import { type TodoCreationRequest, TodoValidator } from '~/lib/validators/todo';
 
@@ -45,6 +46,7 @@ const FormSchema = TodoValidator.omit({ createdAt: true, updatedAt: true });
 
 const TodoForm = () => {
   const router = useRouter();
+  const { toast } = useToast();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -88,13 +90,22 @@ const TodoForm = () => {
 
       return res;
     },
+
     onSuccess: () => {
       router.refresh();
+      toast({
+        title: 'Created new Todo!',
+        variant: 'success',
+      });
     },
   });
 
   const onSubmit = (values: z.infer<typeof FormSchema>) => {
-    console.log(values);
+    toast({
+      title: 'Creating new Todo...',
+      variant: 'info',
+    });
+
     createTodo({
       title: values.title,
       note: values.note,
