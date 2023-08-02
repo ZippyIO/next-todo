@@ -51,7 +51,7 @@ const TodoForm = () => {
     resolver: zodResolver(FormSchema),
     defaultValues: {
       title: '',
-      note: undefined,
+      note: '',
       priority: '',
       tags: [],
       icon: '',
@@ -93,6 +93,7 @@ const TodoForm = () => {
 
     onSuccess: () => {
       router.refresh();
+      form.reset();
       toast({
         title: 'Created new Todo!',
         variant: 'success',
@@ -108,7 +109,7 @@ const TodoForm = () => {
 
     createTodo({
       title: values.title,
-      note: values.note,
+      note: values.note?.length ? values.note : undefined,
       priority: values.priority,
       tags: values.tags,
       icon: values.icon,
@@ -203,7 +204,7 @@ const TodoForm = () => {
                   render={({ field }) => (
                     <FormItem className="w-full">
                       <FormLabel>Priority</FormLabel>
-                      <Select required onValueChange={field.onChange} defaultValue={field.value}>
+                      <Select required onValueChange={field.onChange} value={field.value}>
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue />
@@ -225,7 +226,7 @@ const TodoForm = () => {
                   render={({ field }) => (
                     <FormItem className="w-full">
                       <FormLabel>Icon</FormLabel>
-                      <Select required onValueChange={field.onChange} defaultValue={field.value}>
+                      <Select required onValueChange={field.onChange} value={field.value}>
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue />
@@ -256,7 +257,7 @@ const TodoForm = () => {
                 <FormItem>
                   <FormLabel>Note</FormLabel>
                   <FormControl>
-                    <Textarea rows={10} className="resize-none" {...field} />
+                    <Textarea rows={10} className="resize-none" {...field} value={field.value} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
