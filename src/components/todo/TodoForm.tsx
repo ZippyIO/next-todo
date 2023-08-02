@@ -187,8 +187,8 @@ const TodoForm = () => {
                     <FormLabel>Tags</FormLabel>
                     <FormControl>
                       <MultiSelect
-                        defaultValue={null}
                         onValueChange={field.onChange}
+                        value={field.value}
                         options={tags}
                       />
                     </FormControl>

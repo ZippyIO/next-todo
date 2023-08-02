@@ -17,8 +17,8 @@ interface Option {
 }
 
 interface Props {
-  defaultValue?: Option | null;
-  options: Option[];
+  value: string[];
+  options: readonly Option[];
   onValueChange: (value: string[]) => void;
 }
 
@@ -57,15 +57,17 @@ const DropdownIndicator = (props: DropdownIndicatorProps<Option>) => {
   );
 };
 
-const MultiSelect = ({ defaultValue, onValueChange, options }: Props) => {
+const MultiSelect = ({ value, onValueChange, options }: Props) => {
   const onChange = (option: readonly Option[]) => {
     const values = option.map(({ value }) => value);
     onValueChange(values);
   };
 
+  const mappedValue = value.map((value) => ({ value, label: value }));
+
   return (
     <CreatableSelect
-      defaultValue={defaultValue}
+      value={mappedValue}
       onChange={onChange}
       options={options}
       isMulti
