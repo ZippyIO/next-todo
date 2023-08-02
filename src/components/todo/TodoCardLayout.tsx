@@ -3,6 +3,7 @@
 import { useQuery } from '@tanstack/react-query';
 
 import TodoCard, { type Todo } from '~/components/todo/TodoCard';
+import { Skeleton } from '~/components/ui/Skeleton';
 
 const TodoCardLayout = () => {
   const { data } = useQuery({
@@ -16,7 +17,11 @@ const TodoCardLayout = () => {
 
   return (
     <div className="flex flex-col gap-4">
-      {data?.map((todo) => <TodoCard key={todo.id} todo={todo} />)}
+      {data ? (
+        data?.map((todo) => <TodoCard key={todo.id} todo={todo} />)
+      ) : (
+        <Skeleton className="h-[250px] w-[600px] bg-zinc-900" />
+      )}
     </div>
   );
 };
