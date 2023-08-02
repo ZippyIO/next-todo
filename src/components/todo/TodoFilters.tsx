@@ -37,7 +37,7 @@ const TodoFilters = ({ priority, tag, setPriority, setTag }: Props) => {
   });
 
   return (
-    <div className="flex bg-black p-2">
+    <div className="flex w-full justify-end gap-2 border-b border-zinc-800 bg-black p-2">
       <Select onValueChange={setPriority} value={priority}>
         <SelectTrigger className="w-[150px]">
           <SelectValue placeholder="Priority" />
