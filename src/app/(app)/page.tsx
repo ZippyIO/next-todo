@@ -2,7 +2,7 @@ import { RedirectToSignIn, SignedIn, SignedOut } from '@clerk/nextjs';
 
 import TodoCardLayout from '~/components/todo/TodoCardLayout';
 
-const HomePage = () => {
+const Page = () => {
   return (
     <>
       <SignedIn>
@@ -17,4 +17,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default Page;

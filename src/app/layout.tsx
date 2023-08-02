@@ -6,7 +6,6 @@ import { type Metadata } from 'next';
 import { Inter } from 'next/font/google';
 
 import Providers from '~/components/Providers';
-import Sidebar from '~/components/ui/Sidebar';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -20,16 +19,15 @@ export const metadata: Metadata = {
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <ClerkProvider>
-      <html lang="en" className={inter.className} suppressHydrationWarning>
-        <body className="flex bg-[#0a0a0b] bg-[url('/grid.svg')]">
+    <html lang="en" className={inter.className} suppressHydrationWarning>
+      <body>
+        <ClerkProvider>
           <Providers attribute="class" defaultTheme="dark">
-            <Sidebar />
             {children}
           </Providers>
-        </body>
-      </html>
-    </ClerkProvider>
+        </ClerkProvider>
+      </body>
+    </html>
   );
 };
 
