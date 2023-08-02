@@ -7,7 +7,7 @@ import TodoCard, { type Todo } from '~/components/todo/TodoCard';
 import TodoFilters from '~/components/todo/TodoFilters';
 import { Skeleton } from '~/components/ui/Skeleton';
 
-const TodoCardLayout = () => {
+const TodoContainer = () => {
   const [priority, setPriority] = useState('all');
   const [tag, setTag] = useState('all');
 
@@ -54,4 +54,4 @@ const TodoCardLayout = () => {
   );
 };
 
-export default TodoCardLayout;
+export default TodoContainer;
