@@ -1,13 +1,23 @@
 'use client';
 
 import { type Todo as PrismaTodo } from '@prisma/client';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import clsx from 'clsx';
 import { format, parseISO } from 'date-fns';
 import { BsFillCircleFill } from 'react-icons/bs';
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/Card';
+import { Button } from '~/components/ui/Button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '~/components/ui/Card';
 import DynamicIcon from '~/components/ui/DynamicIcon';
+import { type TodoIdRequest } from '~/lib/validators/todo';
 
 export interface Todo extends Omit<PrismaTodo, 'dueDate' | 'createdAt' | 'updatedAt'> {
   dueDate?: string;
@@ -16,6 +26,35 @@ export interface Todo extends Omit<PrismaTodo, 'dueDate' | 'createdAt' | 'update
 }
 
 const TodoCard = ({ todo }: { todo: Todo }) => {
+  const queryClient = useQueryClient();
+
+  const { mutate: deleteTodo } = useMutation({
+    mutationFn: async ({ todoId }: TodoIdRequest) => {
+      const payload: TodoIdRequest = {
+        todoId,
+      };
+
+      const res = await fetch('/api/todo/delete', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      return res;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['user-todos']);
+    },
+  });
+
+  const handleDeleteTodo = () => {
+    deleteTodo({
+      todoId: todo.id,
+    });
+  };
+
   return (
     <Card className="max-w-prose">
       <CardHeader>
@@ -68,6 +107,11 @@ const TodoCard = ({ todo }: { todo: Todo }) => {
           <p className="text-sm text-zinc-300">{todo.note}</p>
         </div>
       </CardContent>
+      <CardFooter>
+        <Button variant="destructive" onClick={handleDeleteTodo}>
+          Delete Todo
+        </Button>
+      </CardFooter>
     </Card>
   );
 };
