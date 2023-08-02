@@ -6,7 +6,7 @@ const Page = () => {
   return (
     <>
       <SignedIn>
-        <main className="flex min-h-screen w-full flex-col items-center justify-between px-8 py-24">
+        <main className="flex min-h-screen w-full flex-col items-center justify-between">
           <TodoCardLayout />
         </main>
       </SignedIn>
