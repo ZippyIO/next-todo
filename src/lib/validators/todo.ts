@@ -11,4 +11,9 @@ export const TodoValidator = z.object({
   updatedAt: z.coerce.date(),
 });
 
+export const TodoIdValidator = z.object({
+  todoId: z.string().min(1),
+});
+
 export type TodoCreationRequest = z.infer<typeof TodoValidator>;
+export type TodoIdRequest = z.infer<typeof TodoIdValidator>;
