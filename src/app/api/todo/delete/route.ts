@@ -4,6 +4,7 @@ import { type NextRequest } from 'next/server';
 import { z } from 'zod';
 
 import { prisma } from '~/lib/db';
+import { ClerkUserIdValidator } from '~/lib/validators/clerk';
 import { TodoIdValidator } from '~/lib/validators/todo';
 
 export async function DELETE(req: NextRequest) {
@@ -15,7 +16,7 @@ export async function DELETE(req: NextRequest) {
       return new Response('Unauthorized', { status: 401 });
     }
 
-    const userId = z.string().parse(clerkUserId);
+    const { userId } = ClerkUserIdValidator.parse({ userId: clerkUserId });
     const { todoId } = TodoIdValidator.parse({ todoId: body.todoId });
 
     await prisma.todo.delete({
