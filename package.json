@@ -13,7 +13,7 @@
     "vercel-build": "prisma generate && prisma db push && next build"
   },
   "dependencies": {
-    "@clerk/nextjs": "^4.23.1",
+    "@clerk/nextjs": "^4.23.2",
     "@headlessui/react": "^1.7.16",
     "@headlessui/tailwindcss": "^0.2.0",
     "@hookform/resolvers": "^3.1.1",
